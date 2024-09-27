@@ -21,23 +21,6 @@ After running the sample, you can stop the Docker container with `docker-compose
 
 Endpoints that can be used by anyone (public endpoints).
 
-### `Private API`
-
-Endpoints that are not exposed on the internet
-For example: We do not want to expose our metrics and cache interactions to anyone (/metrics /cache)
-
-### `Cache Warmer`
-
-This is used to keep the application cache in sync with new updates.
-
-### `Transaction Processor`
-
-This is used for scanning the transactions from MultiversX Blockchain.
-
-### `Queue Worker`
-
-This is used for concurrently processing heavy jobs.
-
 ### `Grafana dashboard`
 
 You can find a predefined Grafana dashboard with basic metrics at [http://localhost:3010](http://localhost:3010)
@@ -64,7 +47,7 @@ In order to simplify the scripts, the templates will use the following environme
 
 **Description**: Specifies which part of the application to start.
 
-**Possible Values**: `api`, `cache-warmer`, `transactions-processor`, `queue-worker`
+**Possible Values**: `faucet`
 
 **Usage**: Selects the specific application module to run.
 
@@ -92,75 +75,29 @@ Make requests to [http://localhost:3001](http://localhost:3001).
 
 Redis Server is required to be installed.
 
-## Running the api
+## Running the faucet
 
 ```bash
 # development watch mode on devnet
-$ NODE_ENV=devnet NODE_APP=api NODE_WATCH=true npm run start
+$ NODE_ENV=devnet NODE_APP=faucet NODE_WATCH=true npm run start
 or
-$ NODE_ENV=devnet NODE_WATCH=true npm run start:api
+$ NODE_ENV=devnet NODE_WATCH=true npm run start:faucet
 
 # development debug mode on devnet
-$ NODE_ENV=devnet NODE_APP=api NODE_DEBUG=true npm run start
+$ NODE_ENV=devnet NODE_APP=faucet NODE_DEBUG=true npm run start
 or
-$ NODE_ENV=devnet NODE_DEBUG=true npm run start:api
+$ NODE_ENV=devnet NODE_DEBUG=true npm run start:faucet
 
 # development mode
-$ NODE_ENV=devnet NODE_APP=api npm run start
+$ NODE_ENV=devnet NODE_APP=faucet npm run start
 or
-$ NODE_ENV=devnet npm run start:api
+$ NODE_ENV=devnet npm run start:faucet
 
 # production mode
-$ NODE_ENV=mainnet NODE_APP=api npm run start
+$ NODE_ENV=mainnet NODE_APP=faucet npm run start
 or
-$ NODE_ENV=mainnet npm run start:api
+$ NODE_ENV=mainnet npm run start:faucet
 ```
-
-## Running the transactions-processor
-
-```bash
-# development watch mode on devnet
-$ NODE_ENV=devnet NODE_APP=transactions-processor NODE_WATCH=true npm run start
-or
-$ NODE_ENV=devnet NODE_WATCH=true npm run start:transactions-processor
-
-# development debug mode on devnet
-$ NODE_ENV=devnet NODE_APP=transactions-processor NODE_DEBUG=true npm run start
-or
-$ NODE_ENV=devnet NODE_DEBUG=true npm run start:transactions-processor
-
-# development mode on devnet
-$ NODE_ENV=devnet NODE_APP=transactions-processor npm run start
-or
-$ NODE_ENV=devnet npm run start:transactions-processor
-
-# production mode
-$ NODE_ENV=mainnet npm run start:transactions-processor
-```
-
-## Running the queue-worker
-
-```bash
-# development watch mode on devnet
-$ NODE_ENV=devnet NODE_APP=queue-worker NODE_WATCH=true npm run start
-or
-$ NODE_ENV=devnet NODE_WATCH=true npm run start:queue-worker
-
-# development debug mode on devnet
-$ NODE_ENV=devnet NODE_APP=queue-worker NODE_DEBUG=true npm run start
-or
-$ NODE_ENV=devnet NODE_DEBUG=true npm run start:queue-worker
-
-# development mode on devnet
-$ NODE_ENV=devnet NODE_APP=queue-worker npm run start
-or
-$ NODE_ENV=devnet npm run start:queue-worker
-
-# production mode
-$ NODE_ENV=mainnet npm run start:queue-worker
-```
-
-Requests can be made to http://localhost:3001 for the api. The app will reload when you'll make edits (if opened in watch mode). You will also see any lint errors in the console.​
 
 ### `npm run test`
 

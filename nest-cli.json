@@ -1,24 +1,24 @@
 {
   "$schema": "https://json.schemastore.org/nest-cli",
   "collection": "@nestjs/schematics",
-  "sourceRoot": "apps/api/src",
+  "sourceRoot": "apps/faucet/src",
   "compilerOptions": {
     "webpack": false,
     "plugins": [
       "@nestjs/swagger"
     ],
-    "tsConfigPath": "apps/api/tsconfig.app.json"
+    "tsConfigPath": "apps/faucet/tsconfig.app.json"
   },
   "monorepo": true,
-  "root": "apps/api",
+  "root": "apps/faucet",
   "projects": {
-    "api": {
+    "faucet": {
       "type": "application",
-      "root": "apps/api",
+      "root": "apps/faucet",
       "entryFile": "main",
-      "sourceRoot": "apps/api/src",
+      "sourceRoot": "apps/faucet/src",
       "compilerOptions": {
-        "tsConfigPath": "apps/api/tsconfig.app.json",
+        "tsConfigPath": "apps/faucet/tsconfig.app.json",
         "assets": [
           {
             "include": "../config/config.yaml",
@@ -30,64 +30,7 @@
           },
           {
             "include": "../docs/swagger.md",
-            "outDir": "./dist/apps/api/docs"
-          }
-        ]
-      }
-    },
-    "transactions-processor": {
-      "type": "application",
-      "root": "apps/transactions-processor",
-      "entryFile": "main",
-      "sourceRoot": "apps/transactions-processor/src",
-      "compilerOptions": {
-        "tsConfigPath": "apps/transactions-processor/tsconfig.app.json",
-        "assets": [
-          {
-            "include": "../config/config.yaml",
-            "outDir": "./dist/config"
-          },
-          {
-            "include": "../config/schema.yaml",
-            "outDir": "./dist/config"
-          }
-        ]
-      }
-    },
-    "queue-worker": {
-      "type": "application",
-      "root": "apps/queue-worker",
-      "entryFile": "main",
-      "sourceRoot": "apps/queue-worker/src",
-      "compilerOptions": {
-        "tsConfigPath": "apps/queue-worker/tsconfig.app.json",
-        "assets": [
-          {
-            "include": "../config/config.yaml",
-            "outDir": "./dist/config"
-          },
-          {
-            "include": "../config/schema.yaml",
-            "outDir": "./dist/config"
-          }
-        ]
-      }
-    },
-    "cache-warmer": {
-      "type": "application",
-      "root": "apps/cache-warmer",
-      "entryFile": "main",
-      "sourceRoot": "apps/cache-warmer/src",
-      "compilerOptions": {
-        "tsConfigPath": "apps/cache-warmer/tsconfig.app.json",
-        "assets": [
-          {
-            "include": "../config/config.yaml",
-            "outDir": "./dist/config"
-          },
-          {
-            "include": "../config/schema.yaml",
-            "outDir": "./dist/config"
+            "outDir": "./dist/apps/faucet/docs"
           }
         ]
       }

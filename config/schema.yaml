@@ -1,16 +1,8 @@
 title: config
 apps:
-  api:
+  faucet:
     port: integer
-    privatePort: integer
     useCachingInterceptor: boolean
-  cacheWarmer:
-    port: integer
-  queueWorker:
-    port: integer
-  transactionsProcessor:
-    port: integer
-    maxLookBehind: integer
 libs:
   common:
     network:

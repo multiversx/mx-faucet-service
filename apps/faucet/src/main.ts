@@ -64,8 +64,6 @@ async function bootstrap() {
 
   await publicApp.listen(appConfigService.config.port);
 
-  await privateApp.listen(appConfigService.config.privatePort);
-
   const logger = new Logger('Bootstrapper');
 
   LoggerInitializer.initialize(logger);
@@ -88,7 +86,6 @@ async function bootstrap() {
   pubSubApp.listen();
 
   logger.log(`Public API active: ${appConfigService.config.port}`);
-  logger.log(`Private API active: ${appConfigService.config.privatePort}`);
 }
 
 // eslint-disable-next-line @typescript-eslint/no-floating-promises

@@ -32,7 +32,7 @@
     "forceConsistentCasingInFileNames": true,
     "importHelpers": true,
     "typeRoots": [
-      "apps/api/src/@types",
+      "apps/faucet/src/@types",
       "node_modules/@types"
     ],
     "skipLibCheck": true,

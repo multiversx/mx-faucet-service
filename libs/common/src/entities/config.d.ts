@@ -2,20 +2,9 @@
 
 export interface Config {
   apps: {
-    api: {
+    faucet: {
       port: number;
-      privatePort: number;
       useCachingInterceptor: boolean;
-    };
-    cacheWarmer: {
-      port: number;
-    };
-    queueWorker: {
-      port: number;
-    };
-    transactionsProcessor: {
-      port: number;
-      maxLookBehind: number;
     };
   };
   libs: {
