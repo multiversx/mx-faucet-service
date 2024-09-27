@@ -105,7 +105,6 @@ export class FaucetService {
 
     const txNonce = nonce ?? await this.getNonce();
 
-    this.logger.log(tx.toPlainObject());
     this.logger.log(`Sending faucet xEGLD to address '${address}' with nonce '${txNonce}', ip '${clientIp}', chain ID '${networkConfig.ChainID.valueOf()}', captcha '${captcha}'`);
 
     tx.setNonce(txNonce);
