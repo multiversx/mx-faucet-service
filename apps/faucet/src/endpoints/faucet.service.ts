@@ -10,6 +10,7 @@ import { ApiService } from '@multiversx/sdk-nestjs-http';
 import { CacheService } from '@multiversx/sdk-nestjs-cache';
 import { AppConfigService } from '../config/app-config.service';
 import { CacheInfo } from '@libs/common';
+import { Constants } from '@multiversx/sdk-nestjs-common';
 
 @Injectable()
 export class FaucetService {
@@ -93,8 +94,6 @@ export class FaucetService {
       }
     }
 
-    await this.provider.getNetworkConfig();
-
     const tx = new Transaction({
       chainID: networkConfig.ChainID,
       gasLimit: networkConfig.MinGasLimit,
@@ -130,7 +129,11 @@ export class FaucetService {
       await this.provider.sendTransaction(tx2);
     }
 
-    await this.cachingService.set(CacheInfo.FaucetAddress(address).key, true, CacheInfo.FaucetAddress(address).ttl);
+    await this.cachingService.set(
+      CacheInfo.FaucetAddress(address).key,
+      true,
+      Constants.oneSecond() * this.apiConfigService.config.faucetCooldownSameAddressInSec,
+      );
 
     return true;
   }

@@ -17,6 +17,7 @@ export interface Config {
       faucetTokenAmount: string;
       faucetRecaptchaSecret: string;
       faucetRecaptchaBypass: boolean;
+      faucetCooldownSameAddressInSec: number;
     };
   };
   libs: {

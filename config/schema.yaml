@@ -15,6 +15,7 @@ apps:
     faucetTokenAmount: string
     faucetRecaptchaSecret: string
     faucetRecaptchaBypass: boolean
+    faucetCooldownSameAddressInSec: integer
 libs:
   common:
     network:

@@ -14,6 +14,7 @@ apps:
     faucetTokenAmount: ''
     faucetRecaptchaSecret: ''
     faucetRecaptchaBypass: true
+    faucetCooldownSameAddressInSec: 600
 libs:
   common:
     network: ${NETWORK}
