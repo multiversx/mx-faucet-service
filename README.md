@@ -1,4 +1,4 @@
-REST API facade template for microservices that interacts with the MultiversX blockchain.
+Faucet microservice for MultiversX
 
 ## Quick start
 
@@ -7,9 +7,7 @@ REST API facade template for microservices that interacts with the MultiversX bl
 
 ## Dependencies
 
-1. Redis Server is required to be installed [docs](https://redis.io/).
-2. MySQL Server is required to be installed [docs](https://dev.mysql.com/doc/refman/8.0/en/installing.html).
-3. MongoDB Server is required to be installed [docs](https://docs.mongodb.com/).
+1. Redis Server is required to be installed [docs](https://redis.io/)
 
 You can run `docker-compose up` (or `docker-compose up -d` as detached) in a separate terminal to use a local Docker container for all these dependencies.
 
