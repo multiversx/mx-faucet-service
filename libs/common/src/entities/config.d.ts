@@ -5,6 +5,18 @@ export interface Config {
     faucet: {
       port: number;
       useCachingInterceptor: boolean;
+      gatewayUrl: string;
+      jwtSecret: string;
+      recaptchaSecret: string;
+      faucetAddress: string;
+      faucetPrivateKeyMode: string;
+      faucetMnemonic: string;
+      faucetPemPath: string;
+      faucetAmount: string;
+      faucetToken: string;
+      faucetTokenAmount: string;
+      faucetRecaptchaSecret: string;
+      faucetRecaptchaBypass: boolean;
     };
   };
   libs: {
@@ -33,6 +45,14 @@ export interface Config {
         admins: string[];
       };
       rateLimiterSecret?: string;
+      keepAliveAgent: {
+        enabled: boolean;
+      };
+      keepAliveTimeout: {
+        downstream: number;
+        upstream: number;
+      };
+      useCachingInterceptor?: boolean;
     };
   };
 }

@@ -1,13 +1,16 @@
-import { Module } from "@nestjs/common";
-import { DynamicModuleUtils } from "@libs/common";
-import { ExampleModule } from "./example/example.module";
+import { Module } from '@nestjs/common';
+import { DynamicModuleUtils } from '@libs/common';
+import { FaucetModule } from './faucet.module';
 
 @Module({
   imports: [
-    ExampleModule,
+    DynamicModuleUtils.getApiModule(),
+    DynamicModuleUtils.getCachingModule(),
+    FaucetModule,
   ],
   providers: [
     DynamicModuleUtils.getNestJsApiConfigService(),
   ],
 })
-export class EndpointsModule { }
+
+export class EndpointsModule {}

@@ -3,11 +3,23 @@ apps:
   faucet:
     port: integer
     useCachingInterceptor: boolean
+    gatewayUrl: string
+    jwtSecret: string
+    recaptchaSecret: string
+    faucetAddress: string
+    faucetPrivateKeyMode: string
+    faucetMnemonic: string
+    faucetPemPath: string
+    faucetAmount: string
+    faucetToken: string
+    faucetTokenAmount: string
+    faucetRecaptchaSecret: string
+    faucetRecaptchaBypass: boolean
 libs:
   common:
     network:
       type: string
-      enum: [devnet, testnet, mainnet]
+      enum: [ devnet, testnet, mainnet ]
     urls:
       api: string
     database:
@@ -37,7 +49,15 @@ libs:
       admins:
         type: array
         items: string
-        default: []
+        default: [ ]
     rateLimiterSecret:
       type: string
+      required: false
+    keepAliveAgent:
+      enabled: boolean
+    keepAliveTimeout:
+      downstream: integer
+      upstream: integer
+    useCachingInterceptor:
+      type: boolean
       required: false
