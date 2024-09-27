@@ -8,9 +8,9 @@ import { readFileSync } from 'fs';
 import { UserSecretKey } from '@multiversx/sdk-wallet/out';
 import { ApiService } from '@multiversx/sdk-nestjs-http';
 import { CacheService } from '@multiversx/sdk-nestjs-cache';
-import { AppConfigService } from '../config/app-config.service';
 import { CacheInfo } from '@libs/common';
 import { Constants } from '@multiversx/sdk-nestjs-common';
+import { AppConfigService } from '../../config/app-config.service';
 
 @Injectable()
 export class FaucetService {

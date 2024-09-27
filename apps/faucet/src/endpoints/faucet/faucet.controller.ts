@@ -1,7 +1,8 @@
 import { BadRequestException, Body, Controller, Get, HttpException, HttpStatus, Post, UseGuards } from '@nestjs/common';
-import { ClientIp } from './helpers';
-import { Jwt, JwtOrNativeAuthGuard } from '@multiversx/sdk-nestjs-auth';
 import { FaucetService } from './faucet.service';
+import { JwtOrNativeAuthGuard } from '../guards/jwt.or.native-auth.guard';
+import { Jwt } from './decorators/jwt.decorator';
+import { ClientIp } from './decorators/client.ip.decorator';
 
 @Controller()
 export class FaucetController {
