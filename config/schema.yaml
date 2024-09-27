@@ -20,7 +20,7 @@ libs:
   common:
     network:
       type: string
-      enum: [ devnet, testnet, mainnet ]
+      enum: [ devnet, testnet, mainnet, custom ]
     urls:
       api: string
     database:

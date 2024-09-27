@@ -1,8 +1,8 @@
-import { Injectable } from "@nestjs/common";
-import { configuration } from "./configuration";
+import { Injectable } from '@nestjs/common';
+import { configuration } from './configuration';
 
 export interface NetworkConfig {
-  chainID: 'D' | 'T' | '1';
+  chainID: string;
 }
 
 @Injectable()
@@ -16,6 +16,9 @@ export class NetworkConfigService {
   private readonly mainnetConfig: NetworkConfig = {
     chainID: '1',
   };
+  private readonly customConfig: NetworkConfig = {
+    chainID: 'T',
+  };
 
   public readonly config: NetworkConfig;
 
@@ -26,6 +29,7 @@ export class NetworkConfigService {
       devnet: this.devnetConfig,
       testnet: this.testnetConfig,
       mainnet: this.mainnetConfig,
+      custom: this.customConfig,
     };
 
     this.config = networkConfigs[network];

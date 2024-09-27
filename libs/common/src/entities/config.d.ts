@@ -22,7 +22,7 @@ export interface Config {
   };
   libs: {
     common: {
-      network: "devnet" | "testnet" | "mainnet";
+      network: "devnet" | "testnet" | "mainnet" | "custom";
       urls: {
         api: string;
       };
