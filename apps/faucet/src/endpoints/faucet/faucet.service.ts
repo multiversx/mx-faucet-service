@@ -216,6 +216,8 @@ export class FaucetService {
       remoteip: clientIp,
     }));
 
+    console.log(result);
+    console.log(result.success);
     return result.success;
   }
 }
