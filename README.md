@@ -1,10 +1,10 @@
-Faucet microservice for MultiversX
+Lite extras microservice API for MultiversX
 
 ## Quick start
 
 1. Run `npm install` in the project directory
 2. Optionally make edits to `config/config.yaml` and/or `.env` files
-3. Start the app via `npm run start:faucet` after setting the environment (for example: `NODE_ENV=testnet npm run start:faucet`)
+3. Start the faucet app via `npm run start:faucet` after setting the environment (for example: `NODE_ENV=testnet npm run start:faucet`)
 
 ## Dependencies
 

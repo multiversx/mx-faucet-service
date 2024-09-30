@@ -14,7 +14,7 @@ apps:
     faucetTokenAmount: ''
     faucetRecaptchaSecret: ''
     faucetRecaptchaBypass: true
-    faucetCooldownSameAddressInSec: 10
+    faucetCooldownSameAddressInSec: 600
 libs:
   common:
     network: ${NETWORK}
@@ -33,7 +33,7 @@ libs:
     nativeAuth:
       # maxExpirySeconds:
       acceptedOrigins:
-        - https://utils.multiversx.com
+        - '*'
     security:
       admins: []
       #rateLimiterSecret:
