@@ -22,6 +22,7 @@ export class FaucetService {
   faucetAccount?: Account;
   faucetAddress: string = '';
   signer?: UserSigner;
+  enabled: boolean = false;
 
   constructor(
     private readonly cachingService: CacheService,
@@ -30,29 +31,23 @@ export class FaucetService {
   ) {
     this.logger = new Logger(FaucetService.name);
 
-    if (this.isFaucetEnabled()) {
-      this.provider = new ProxyNetworkProvider(this.apiConfigService.config.gatewayUrl);
-      const privateKeyMode = this.apiConfigService.config.faucetPrivateKeyMode;
-      let secretKey;
-      if (privateKeyMode === 'mnemonic') {
-        secretKey = Mnemonic.fromString(this.apiConfigService.config.faucetMnemonic).deriveKey();
-      } else { // pem file
-        const pemContent = readFileSync(this.apiConfigService.config.faucetPemPath);
-        secretKey = UserSecretKey.fromPem(pemContent.toString(), this.apiConfigService.config.faucetPemIndex ?? 0);
-      }
-      this.signer = new UserSigner(secretKey);
-      this.faucetAddress = this.signer.getAddress().bech32();
-      this.faucetAccount = new Account(new Address(this.faucetAddress));
+    this.provider = new ProxyNetworkProvider(this.apiConfigService.config.gatewayUrl);
+    const privateKeyMode = this.apiConfigService.config.faucetPrivateKeyMode;
+    let secretKey;
+    if (privateKeyMode === 'mnemonic') {
+      secretKey = Mnemonic.fromString(this.apiConfigService.config.faucetMnemonic).deriveKey();
+    } else { // pem file
+      const pemContent = readFileSync(this.apiConfigService.config.faucetPemPath);
+      secretKey = UserSecretKey.fromPem(pemContent.toString(), this.apiConfigService.config.faucetPemIndex ?? 0);
     }
+    this.signer = new UserSigner(secretKey);
+    this.faucetAddress = this.signer.getAddress().bech32();
+    this.faucetAccount = new Account(new Address(this.faucetAddress));
+    this.enabled = this.faucetAddress.length > 0;
   }
 
   isFaucetEnabled(): boolean {
-    if (!this.faucetAccount) {
-      return false;
-    }
-    const faucetAddress = this.faucetAccount.address.bech32();
-
-    return faucetAddress !== undefined && faucetAddress !== null && faucetAddress !== '';
+    return this.enabled;
   }
 
   shouldBypassCaptchaCheck(): boolean {
@@ -68,7 +63,7 @@ export class FaucetService {
   }
 
   async retrieveFunds(address: string, nonce: number | undefined, clientIp: string, captcha: string): Promise<boolean> {
-    if (!this.isFaucetEnabled()) {
+    if (!this.enabled) {
       throw new Error('Faucet not enabled');
     }
 
