@@ -8,10 +8,10 @@ export interface Config {
       gatewayUrl: string;
       jwtSecret: string;
       recaptchaSecret: string;
-      faucetAddress: string;
       faucetPrivateKeyMode: string;
       faucetMnemonic: string;
       faucetPemPath: string;
+      faucetPemIndex: number;
       faucetAmount: string;
       faucetToken: string;
       faucetTokenAmount: string;

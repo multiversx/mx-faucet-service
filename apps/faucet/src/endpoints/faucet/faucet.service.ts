@@ -9,7 +9,7 @@ import { UserSecretKey } from '@multiversx/sdk-wallet/out';
 import { ApiService } from '@multiversx/sdk-nestjs-http';
 import { CacheService } from '@multiversx/sdk-nestjs-cache';
 import { CacheInfo } from '@libs/common';
-import { Constants } from '@multiversx/sdk-nestjs-common';
+import { AddressUtils, Constants } from '@multiversx/sdk-nestjs-common';
 import { AppConfigService } from '../../config/app-config.service';
 
 @Injectable()
@@ -20,6 +20,7 @@ export class FaucetService {
 
   provider?: ProxyNetworkProvider;
   faucetAccount?: Account;
+  faucetAddress: string = '';
   signer?: UserSigner;
 
   constructor(
@@ -31,21 +32,25 @@ export class FaucetService {
 
     if (this.isFaucetEnabled()) {
       this.provider = new ProxyNetworkProvider(this.apiConfigService.config.gatewayUrl);
-      this.faucetAccount = new Account(new Address(this.apiConfigService.config.faucetAddress));
       const privateKeyMode = this.apiConfigService.config.faucetPrivateKeyMode;
       let secretKey;
       if (privateKeyMode === 'mnemonic') {
         secretKey = Mnemonic.fromString(this.apiConfigService.config.faucetMnemonic).deriveKey();
       } else { // pem file
         const pemContent = readFileSync(this.apiConfigService.config.faucetPemPath);
-        secretKey = UserSecretKey.fromPem(pemContent.toString());
+        secretKey = UserSecretKey.fromPem(pemContent.toString(), this.apiConfigService.config.faucetPemIndex ?? 0);
       }
       this.signer = new UserSigner(secretKey);
+      this.faucetAddress = this.signer.getAddress().bech32();
+      this.faucetAccount = new Account(new Address(this.faucetAddress));
     }
   }
 
   isFaucetEnabled(): boolean {
-    const faucetAddress = this.apiConfigService.config.faucetAddress;
+    if (!this.faucetAccount) {
+      return false;
+    }
+    const faucetAddress = this.faucetAccount.address.bech32();
 
     return faucetAddress !== undefined && faucetAddress !== null && faucetAddress !== '';
   }
@@ -62,7 +67,7 @@ export class FaucetService {
     return this.networkConfig;
   }
 
-  async retrieveFunds(address: string, nonce: number | undefined = undefined, clientIp: string | undefined = undefined, captcha: string | undefined = undefined): Promise<boolean> {
+  async retrieveFunds(address: string, nonce: number | undefined, clientIp: string, captcha: string): Promise<boolean> {
     if (!this.isFaucetEnabled()) {
       throw new Error('Faucet not enabled');
     }
@@ -73,6 +78,10 @@ export class FaucetService {
 
     if (!this.provider) {
       throw new Error('No provider initialized');
+    }
+
+    if (!AddressUtils.isAddressValid(address)) {
+      throw new Error('Invalid bech32 address');
     }
 
     const networkConfig = await this.getNetworkConfig();
@@ -87,7 +96,7 @@ export class FaucetService {
       }
     }
 
-    if (address !== this.apiConfigService.config.faucetAddress) {
+    if (address !== this.faucetAddress) {
       const isAddressUsed = await this.cachingService.get(CacheInfo.FaucetAddress(address).key);
       if (isAddressUsed) {
         return false;
@@ -100,7 +109,7 @@ export class FaucetService {
       gasPrice: networkConfig.MinGasPrice,
       receiver: new Address(address),
       value: this.apiConfigService.config.faucetAmount,
-      sender: new Address(this.apiConfigService.config.faucetAddress),
+      sender: new Address(this.faucetAddress),
     });
 
     const txNonce = nonce ?? await this.getNonce();
@@ -133,7 +142,7 @@ export class FaucetService {
       CacheInfo.FaucetAddress(address).key,
       true,
       Constants.oneSecond() * this.apiConfigService.config.faucetCooldownSameAddressInSec,
-      );
+    );
 
     return true;
   }
@@ -143,25 +152,22 @@ export class FaucetService {
     const tokenAmountHex = this.padHex(BigInt(this.apiConfigService.config.faucetTokenAmount).toString(16));
 
     const isNft = faucetToken.split('-').length === 3;
+    let dataField = new TransactionPayload(`ESDTTransfer@${tokenHex}@${tokenAmountHex}`);
+    let receiverAddress = address;
+
     if (isNft) {
       const tokenNonceHex = faucetToken.split('-')[2];
-      return new Transaction({
-        chainID: networkConfig.ChainID,
-        gasPrice: networkConfig.MinGasPrice,
-        gasLimit: 500000,
-        receiver: new Address(this.apiConfigService.config.faucetAddress),
-        data: new TransactionPayload(`ESDTNFTTransfer@${tokenHex}@${tokenNonceHex}@${tokenAmountHex}@${new Address(address).hex()}`),
-        sender: new Address(this.apiConfigService.config.faucetAddress),
-      });
+      dataField = new TransactionPayload(`ESDTNFTTransfer@${tokenHex}@${tokenNonceHex}@${tokenAmountHex}@${new Address(address).hex()}`);
+      receiverAddress = this.faucetAddress;
     }
 
     return new Transaction({
       chainID: networkConfig.ChainID,
       gasPrice: networkConfig.MinGasPrice,
       gasLimit: 500000,
-      receiver: new Address(address),
-      data: new TransactionPayload(`ESDTTransfer@${tokenHex}@${tokenAmountHex}`),
-      sender: new Address(this.apiConfigService.config.faucetAddress),
+      receiver: new Address(receiverAddress),
+      data: dataField,
+      sender: new Address(this.faucetAddress),
     });
   }
 
@@ -201,7 +207,7 @@ export class FaucetService {
     const faucetToken = this.apiConfigService.config.faucetToken;
 
     return {
-      address: this.apiConfigService.config.faucetAddress,
+      address: this.faucetAddress,
       amount: this.apiConfigService.config.faucetAmount,
       token: faucetToken ? faucetToken.split('-').slice(0, 2).join('-') : undefined,
       tokenAmount: this.apiConfigService.config.faucetTokenAmount ? this.apiConfigService.config.faucetTokenAmount : undefined,
@@ -210,12 +216,16 @@ export class FaucetService {
   }
 
   private async validateRecaptcha(recaptcha: string, clientIp: string | undefined): Promise<boolean> {
-    const result = await this.apiService.post('https://www.google.com/recaptcha/api/siteverify', qs.stringify({
-      secret: this.apiConfigService.config.faucetRecaptchaSecret,
-      response: recaptcha,
-      remoteip: clientIp,
-    }));
+    try {
+      const result = await this.apiService.post('https://www.google.com/recaptcha/api/siteverify', qs.stringify({
+        secret: this.apiConfigService.config.faucetRecaptchaSecret,
+        response: recaptcha,
+        remoteip: clientIp,
+      }));
 
-    return result?.data?.success ?? false;
+      return result?.data?.success ?? false;
+    } catch (error) {
+      return false;
+    }
   }
 }

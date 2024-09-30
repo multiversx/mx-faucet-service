@@ -6,7 +6,6 @@ import { FaucetService } from './faucet.service';
 import { ApiModule } from '@multiversx/sdk-nestjs-http';
 import { NativeAuthGuard } from '@multiversx/sdk-nestjs-auth';
 import { AppConfigModule } from '../../config/app-config.module';
-import { ImpersonateService } from '../impersonate/impersonate.service';
 
 @Module({
   imports: [
@@ -19,7 +18,6 @@ import { ImpersonateService } from '../impersonate/impersonate.service';
     DynamicModuleUtils.getNestJsApiConfigService(),
     NativeAuthGuard,
     FaucetService,
-    ImpersonateService,
   ],
   controllers: [
     FaucetController,

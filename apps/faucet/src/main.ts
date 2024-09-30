@@ -68,7 +68,6 @@ async function bootstrap() {
 
   LoggerInitializer.initialize(logger);
 
-  console.log(commonConfigService.config.urls.api);
   const pubSubApp = await NestFactory.createMicroservice<MicroserviceOptions>(
     PubSubListenerModule.forRoot(),
     {
