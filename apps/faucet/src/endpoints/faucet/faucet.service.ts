@@ -218,6 +218,6 @@ export class FaucetService {
 
     console.log(result);
     console.log(result.success);
-    return result.success;
+    return result?.data?.success ?? false;
   }
 }
