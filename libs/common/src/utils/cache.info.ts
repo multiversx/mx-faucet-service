@@ -15,4 +15,16 @@ export class CacheInfo {
     key: "examples",
     ttl: Constants.oneHour(),
   };
+
+  static FaucetAddress(address: string): CacheInfo {
+    return {
+      key: `faucet:${address}`,
+      ttl: Constants.oneHour(),
+    };
+  }
+
+  static FaucetNonce: CacheInfo = {
+    key: "faucetNonce",
+    ttl: Constants.oneMonth(),
+  };
 }

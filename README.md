@@ -1,15 +1,14 @@
-REST API facade template for microservices that interacts with the MultiversX blockchain.
+Lite extras microservice API for MultiversX
 
 ## Quick start
 
 1. Run `npm install` in the project directory
 2. Optionally make edits to `config/config.yaml` and/or `.env` files
+3. Start the faucet app via `npm run start:faucet` after setting the environment (for example: `NODE_ENV=testnet npm run start:faucet`)
 
 ## Dependencies
 
-1. Redis Server is required to be installed [docs](https://redis.io/).
-2. MySQL Server is required to be installed [docs](https://dev.mysql.com/doc/refman/8.0/en/installing.html).
-3. MongoDB Server is required to be installed [docs](https://docs.mongodb.com/).
+1. Redis Server is required to be installed [docs](https://redis.io/)
 
 You can run `docker-compose up` (or `docker-compose up -d` as detached) in a separate terminal to use a local Docker container for all these dependencies.
 
@@ -68,10 +67,10 @@ In order to simplify the scripts, the templates will use the following environme
 **Usage**: When set to true, the application starts in watch mode, which automatically reloads the app on code changes.
 
 
-### `npm run start`
+### `npm run start:faucet`
 
 Runs the app in the production mode.
-Make requests to [http://localhost:3001](http://localhost:3001).
+Make requests to [http://localhost:3000](http://localhost:3000).
 
 Redis Server is required to be installed.
 

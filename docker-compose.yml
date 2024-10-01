@@ -6,16 +6,6 @@ services:
     ports:
       - "6379:6379"
 
-  database:
-    image: "mysql:latest"
-    ports:
-      - "3306:3306"
-
-  mongodb:
-    image: mongo:latest
-    ports:
-      - 27017:27017
-
   prometheus:
     image: prom/prometheus:latest
     command: '--config.file=/etc/prometheus/prometheus.yml'
