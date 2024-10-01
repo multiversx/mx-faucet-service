@@ -1,15 +1,20 @@
 apps:
-  api:
+  faucet:
     port: 3000
-    privatePort: 4000
     useCachingInterceptor: true
-  cacheWarmer:
-    port: 4001
-  queueWorker:
-    port: 4002
-  transactionsProcessor:
-    port: 4003
-    maxLookBehind: 100
+    gatewayUrl: ${GATEWAY_URL}
+    jwtSecret: ''
+    recaptchaSecret: ''
+    faucetPrivateKeyMode: 'mnemonic' # 'mnemonic' or 'pem'
+    faucetMnemonic: 'find filter man earth citizen student grit limit intact unlock soon sell glass arm join mutual burger horror ghost vapor phrase build artefact alley'
+    faucetPemPath: ''
+    faucetPemIndex: 0
+    faucetAmount: '1000000000000000000'
+    faucetToken: ''
+    faucetTokenAmount: ''
+    faucetRecaptchaSecret: ''
+    faucetRecaptchaBypass: true
+    faucetCooldownSameAddressInSec: 600
 libs:
   common:
     network: ${NETWORK}
@@ -28,7 +33,12 @@ libs:
     nativeAuth:
       # maxExpirySeconds:
       acceptedOrigins:
-        - utils.multiversx.com
+        - '*'
     security:
       admins: []
-    # rateLimiterSecret:
+      #rateLimiterSecret:
+    keepAliveAgent:
+      enabled: true
+    keepAliveTimeout:
+      downstream: 61000
+      upstream: 60000

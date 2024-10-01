@@ -2,25 +2,27 @@
 
 export interface Config {
   apps: {
-    api: {
+    faucet: {
       port: number;
-      privatePort: number;
       useCachingInterceptor: boolean;
-    };
-    cacheWarmer: {
-      port: number;
-    };
-    queueWorker: {
-      port: number;
-    };
-    transactionsProcessor: {
-      port: number;
-      maxLookBehind: number;
+      gatewayUrl: string;
+      jwtSecret: string;
+      recaptchaSecret: string;
+      faucetPrivateKeyMode: string;
+      faucetMnemonic: string;
+      faucetPemPath: string;
+      faucetPemIndex: number;
+      faucetAmount: string;
+      faucetToken: string;
+      faucetTokenAmount: string;
+      faucetRecaptchaSecret: string;
+      faucetRecaptchaBypass: boolean;
+      faucetCooldownSameAddressInSec: number;
     };
   };
   libs: {
     common: {
-      network: "devnet" | "testnet" | "mainnet";
+      network: "devnet" | "testnet" | "mainnet" | "custom";
       urls: {
         api: string;
       };
@@ -44,6 +46,14 @@ export interface Config {
         admins: string[];
       };
       rateLimiterSecret?: string;
+      keepAliveAgent: {
+        enabled: boolean;
+      };
+      keepAliveTimeout: {
+        downstream: number;
+        upstream: number;
+      };
+      useCachingInterceptor?: boolean;
     };
   };
 }

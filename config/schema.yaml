@@ -1,21 +1,26 @@
 title: config
 apps:
-  api:
+  faucet:
     port: integer
-    privatePort: integer
     useCachingInterceptor: boolean
-  cacheWarmer:
-    port: integer
-  queueWorker:
-    port: integer
-  transactionsProcessor:
-    port: integer
-    maxLookBehind: integer
+    gatewayUrl: string
+    jwtSecret: string
+    recaptchaSecret: string
+    faucetPrivateKeyMode: string
+    faucetMnemonic: string
+    faucetPemPath: string
+    faucetPemIndex: integer
+    faucetAmount: string
+    faucetToken: string
+    faucetTokenAmount: string
+    faucetRecaptchaSecret: string
+    faucetRecaptchaBypass: boolean
+    faucetCooldownSameAddressInSec: integer
 libs:
   common:
     network:
       type: string
-      enum: [devnet, testnet, mainnet]
+      enum: [ devnet, testnet, mainnet, custom ]
     urls:
       api: string
     database:
@@ -45,7 +50,15 @@ libs:
       admins:
         type: array
         items: string
-        default: []
+        default: [ ]
     rateLimiterSecret:
       type: string
+      required: false
+    keepAliveAgent:
+      enabled: boolean
+    keepAliveTimeout:
+      downstream: integer
+      upstream: integer
+    useCachingInterceptor:
+      type: boolean
       required: false

@@ -24,20 +24,8 @@ module.exports = {
     },
     'boundaries/elements': [
       {
-        type: 'apps/api',
-        pattern: 'apps/api',
-      },
-      {
-        type: 'apps/cache-warmer',
-        pattern: 'apps/cache-warmer',
-      },
-      {
-        type: 'apps/queue-worker',
-        pattern: 'apps/queue-worker',
-      },
-      {
-        type: 'apps/transactions-processor',
-        pattern: 'apps/transactions-processor',
+        type: 'apps/faucet',
+        pattern: 'apps/faucet',
       },
       {
         type: 'libs/common',
@@ -78,19 +66,7 @@ module.exports = {
       default: 'disallow',
       rules: [
         {
-          from: 'apps/api',
-          allow: ['libs/common', 'libs/entities', 'libs/services']
-        },
-        {
-          from: 'apps/cache-warmer',
-          allow: ['libs/common', 'libs/entities', 'libs/services']
-        },
-        {
-          from: 'apps/queue-worker',
-          allow: ['libs/common', 'libs/entities', 'libs/services']
-        },
-        {
-          from: 'apps/transactions-processor',
+          from: 'apps/faucet',
           allow: ['libs/common', 'libs/entities', 'libs/services']
         },
         {
